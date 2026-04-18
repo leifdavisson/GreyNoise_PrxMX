@@ -1,0 +1,20 @@
+# GreyNoise Proxmox Plugin - Example Configuration
+# Copy this file to config/defaults.conf and customize as needed.
+
+# VM Identity
+VM_NAME="greynoise-sensor"
+BRIDGE="vmbr0"
+STORAGE="local-lvm"  # Default storage; installer will prompt for alternatives
+
+# Resource Allocation
+MEMORY=2048
+CORES=2
+
+# Guest OS Settings
+SSH_USER="ubuntu"
+IMAGE_URL="https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
+IMAGE_PATH="/var/lib/vz/template/cache/noble-server-cloudimg-amd64.img"
+
+# Default Network Allocation Range
+START_HOST=20
+END_HOST=250

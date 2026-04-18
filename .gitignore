@@ -1,0 +1,15 @@
+# GreyNoise Proxmox Plugin ignore rules
+
+# Local configuration (Contains sensitive paths/IDs)
+config/defaults.conf
+
+# Logs and temporary files
+*.log
+/tmp/
+
+# OS/IDE generated files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*~
