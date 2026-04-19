@@ -14,7 +14,7 @@
   **Automated GreyNoise Sensor Deployment for Proxmox VE**
 
   [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
-  [![Proxmox VE](https://img.shields.io/badge/Proxmox-VE%208.x-orange.svg)](https://www.proxmox.com)
+  [![Proxmox VE](https://img.shields.io/badge/Proxmox-VE%209.1-orange.svg)](https://www.proxmox.com)
   [![Bash](https://img.shields.io/badge/Shell-Bash-4EAA25.svg)](https://www.gnu.org/software/bash/)
 
 </div>
