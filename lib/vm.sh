@@ -19,7 +19,7 @@ create_vm() {
   vmid=$(pvesh get /cluster/nextid)
 
   local NET0_OPTS="virtio,bridge=$bridge"
-  if [[ "$vlan" -gt 0 ]]; then
+  if [[ "$vlan" =~ ^[0-9]+$ ]] && [[ "$vlan" -gt 0 ]]; then
     NET0_OPTS+=",tag=$vlan"
   fi
 

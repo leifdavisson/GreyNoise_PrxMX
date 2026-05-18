@@ -70,6 +70,7 @@ if [[ -z "$GN_WORKSPACE" ]]; then msg_error "Workspace ID is required."; exit 1;
 
 # VM Settings
 VM_NAME=$(whiptail --inputbox "Enter VM Name:" 10 60 "$VM_NAME" 3>&1 1>&2 2>&3 | xargs)
+if [[ ! "$VM_NAME" =~ ^[a-zA-Z0-9_-]+$ ]]; then msg_error "Invalid VM Name. Only alphanumeric characters, dashes, and underscores are allowed."; exit 1; fi
 
 # Storage Selection
 msg_info "Discovering available storage..."
@@ -83,13 +84,16 @@ STORAGE=$(whiptail --title "Storage Selection" --menu "Select storage for VM dis
 if [[ -z "$STORAGE" ]]; then msg_error "Storage selection is required."; exit 1; fi
 
 VLAN=$(whiptail --inputbox "Enter DMZ VLAN ID (0 for none):" 10 60 "0" 3>&1 1>&2 2>&3 | xargs)
+if [[ ! "$VLAN" =~ ^[0-9]+$ ]]; then msg_error "Invalid VLAN ID. Must be a number."; exit 1; fi
 
 # Network Settings
 SUBNET=$(whiptail --inputbox "Enter Subnet CIDR (e.g., 192.168.1.0/24):" 10 60 3>&1 1>&2 2>&3 | xargs)
 if [[ -z "$SUBNET" ]]; then msg_error "Subnet is required."; exit 1; fi
+if [[ ! "$SUBNET" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$ ]]; then msg_error "Invalid Subnet format."; exit 1; fi
 
 GATEWAY=$(whiptail --inputbox "Enter Gateway IP:" 10 60 3>&1 1>&2 2>&3 | xargs)
 if [[ -z "$GATEWAY" ]]; then msg_error "Gateway is required."; exit 1; fi
+if [[ ! "$GATEWAY" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then msg_error "Invalid Gateway IP format."; exit 1; fi
 
 # IP Allocation Mode
 IP_MODE=$(whiptail --title "IP Allocation" --menu "Choose IP range scanning mode:" 15 60 4 \
@@ -103,8 +107,11 @@ case "$IP_MODE" in
   FULL)
     S_HOST=1; E_HOST=254 ;;
   CUSTOM)
-    S_HOST=$(whiptail --inputbox "Start host octet (e.g., 50):" 10 60 "50" 3>&1 1>&2 2>&3)
-    E_HOST=$(whiptail --inputbox "End host octet (e.g., 100):" 10 60 "100" 3>&1 1>&2 2>&3) ;;
+    S_HOST=$(whiptail --inputbox "Start host octet (e.g., 50):" 10 60 "50" 3>&1 1>&2 2>&3 | xargs)
+    if [[ ! "$S_HOST" =~ ^[0-9]+$ ]]; then msg_error "Invalid Start host octet. Must be a number."; exit 1; fi
+    E_HOST=$(whiptail --inputbox "End host octet (e.g., 100):" 10 60 "100" 3>&1 1>&2 2>&3 | xargs)
+    if [[ ! "$E_HOST" =~ ^[0-9]+$ ]]; then msg_error "Invalid End host octet. Must be a number."; exit 1; fi
+    ;;
   *)
     msg_error "Invalid selection."; exit 1 ;;
 esac
