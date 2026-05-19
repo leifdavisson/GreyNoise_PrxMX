@@ -16,10 +16,11 @@ install_greynoise() {
   
   # Execute the bootstrap script on the guest via SSH
   ssh -o StrictHostKeyChecking=no "$user@$ip" <<EOF
-export GREYNOISE_API_KEY="$api_key"
+export GREYNOISE_API_KEY=$(printf '%q' "$api_key")
+WORKSPACE_ID=$(printf '%q' "$workspace_id")
 curl -H "key: \${GREYNOISE_API_KEY}" -L \
-"https://api.greynoise.io/v1/workspaces/$workspace_id/sensors/bootstrap/script" \
-| sudo bash -s -- -k \${GREYNOISE_API_KEY}
+"https://api.greynoise.io/v1/workspaces/\${WORKSPACE_ID}/sensors/bootstrap/script" \
+| sudo bash -s -- -k "\${GREYNOISE_API_KEY}"
 EOF
 
   msg_ok "GreyNoise Sensor installation triggered"
