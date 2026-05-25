@@ -14,11 +14,17 @@ install_greynoise() {
 
   msg_info "Installing GreyNoise Sensor on $ip"
   
+  local api_key_b64
+  local workspace_id_b64
+  api_key_b64=$(printf '%s' "$api_key" | base64 -w0)
+  workspace_id_b64=$(printf '%s' "$workspace_id" | base64 -w0)
+
   # Execute the bootstrap script on the guest via SSH
   ssh -o StrictHostKeyChecking=no "$user@$ip" <<EOF
-export GREYNOISE_API_KEY="$api_key"
+export GREYNOISE_API_KEY=\$(printf '%s' "$api_key_b64" | base64 -d)
+WORKSPACE_ID=\$(printf '%s' "$workspace_id_b64" | base64 -d)
 curl -H "key: \${GREYNOISE_API_KEY}" -L \
-"https://api.greynoise.io/v1/workspaces/$workspace_id/sensors/bootstrap/script" \
+"https://api.greynoise.io/v1/workspaces/\${WORKSPACE_ID}/sensors/bootstrap/script" \
 | sudo bash -s -- -k \${GREYNOISE_API_KEY}
 EOF
 
